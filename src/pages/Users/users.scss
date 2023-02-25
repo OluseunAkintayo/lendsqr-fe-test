@@ -1,0 +1,112 @@
+@use '../../styles/typography.scss';
+@use '../../index.scss';
+
+.users__container {
+	.loadingContainer {
+		display: grid;
+		place-items: center;
+		min-height: 440px;
+		.loading {
+			@include index.spinner;
+		}
+	}
+
+	.page__title {
+		color: typography.$title-color;
+		font-family: typography.$font-sans;
+		font-weight: 500;
+		font-size: 1.5rem;
+	}
+
+	.cards_row {
+		margin: 1.5rem 0;
+		display: grid;
+		gap: 1rem;
+		@media (min-width: 0px) {
+			grid-template-columns: repeat(1, 1fr);
+		}
+		@media (min-width: 600px) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		@media (min-width: 1368px) {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+	
+	.card__container {
+		width: 100%;
+		min-width: 240px;
+		aspect-ratio: 3/2;
+		box-shadow: 3px 5px 20px rgba(0, 0, 0, 0.04);
+		border-radius: 0.25rem;
+		overflow: hidden;
+		background-color: #ffffff;
+		display: flex;
+		cursor: pointer;
+		&:hover img {
+			transform: scale(1.2);
+		}
+		@media (max-width: 600px) {
+			min-width: unset;
+			aspect-ratio: unset;
+		}
+		@media (min-width: 900px) {
+			min-width: unset;
+			aspect-ratio: unset;
+		}
+		.card__content_wrapper {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			gap: 1.25rem;
+			padding: 1.25rem 2rem;
+			img {
+				width: 40px;
+				transition: all 0.2s ease-in-out;
+			}
+			.card__title {
+				color: typography.$text-primary-color;
+				font-family: typography.$font-sans;
+				font-weight: 500;
+				font-size: 0.75rem;
+				text-transform: uppercase;
+			}
+			.card__value {
+				color: typography.$title-color;
+				font-size: 1.5rem;
+				font-weight: 600;
+				font-family: typography.$font-sans;
+			}
+		}
+	}
+
+	.users__tableWrapper {
+		.users__tableColumnTitle {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+			cursor: pointer;
+			.users__tableColumnTitleText {
+				font-weight: 600;
+				font-size: 0.75rem;
+				line-height: 0.875rem;
+				text-transform: uppercase;
+				font-family: typography.$font-sans;
+				color: typography.$text-primary-color;
+			}
+			.users__tableColumnTitleIcon {
+				width: 1rem;
+				aspect-ratio: 1;
+				cursor: pointer;
+			}
+		}
+		.users__tableCellRow {
+			&:hover {
+				background-color: rgba(typography.$text-primary-color, 0.2);
+			}
+		}
+		.users__tableCellContent {
+					
+		}
+	}
+}

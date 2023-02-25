@@ -1,0 +1,100 @@
+@use '../../styles/typography.scss';
+
+.header {
+	// box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+	box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
+	height: 100px;
+	display: grid;
+	grid-template-columns: 275px 1fr;
+	position: relative;
+	z-index: 1;
+}
+
+.header__logoContainer {
+	display: flex;
+	align-items: center;
+	padding-left: 1rem;
+	img {
+		width: 144px;
+		cursor: pointer;
+	}
+}
+
+.header__right {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	justify-content: space-between;
+	padding: 1rem 1rem 1rem 2rem;
+
+	.header__searchBar {
+		width: 100%;
+		max-width: 360px;
+		display: flex;
+		input {
+			height: 2.5rem;
+			width: 100%;
+			border-radius: 0.5rem 0 0 0.5rem;
+			border: 1px solid typography.$title-color;
+			border-right: transparent;
+			outline: none;
+			padding: 0 0.5rem;
+			color: rgba(typography.$text-primary-color, 0.7);
+			&::placeholder {
+				font-size: 0.875rem;
+				color: rgba(typography.$text-primary-color, 0.7);
+			}
+		}
+		div {
+			background-color: typography.$text-secondary-color;
+			border: 1px solid typography.$text-secondary-color;
+			width: 3.5rem;
+			border-radius: 0 0.5rem 0.5rem 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-left: -2px;
+			img {
+				width: 1.5rem;
+			}
+		}
+	}
+
+	.header__userMenu {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		.header__linkText {
+			font-family: 'Roboto', sans-serif;
+			color: typography.$text-primary-color;
+		}
+		.header__notifications__icon {
+			width: 1.125rem;
+			margin: 0 1rem;
+			cursor: pointer;
+		}
+		.header__notifications__avatar {
+			width: 3rem;
+			border-radius: 50%;
+			cursor: pointer;
+		}
+		.header__userName {
+			display: flex;
+			align-items: center;
+			gap: 	0.5rem;
+			cursor: pointer;
+			p, span {
+				color: typography.$text-primary-color;
+			}
+			p {
+				font-family: 'Work Sans', sans-serif;
+				font-size: 1rem;
+				font-weight: 500;
+			}
+			span {
+				font-size: 0.5rem;
+				margin-bottom: -0.125rem;
+			}
+		}
+	}
+}

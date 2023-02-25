@@ -1,0 +1,87 @@
+@use '../../styles/typography.scss';
+
+@mixin navItemBase {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	height: 2.5rem;
+	padding-left: 1rem;
+	transition: border 0.2s ease-out;
+	cursor: pointer;
+	&:hover {
+		background-color: rgba(typography.$text-secondary-color, 0.06);
+		border-left: 3px solid typography.$text-secondary-color;
+	}
+	.nav__item__icon {
+		width: 1rem;
+	}
+	.nav__item__text {
+		font-family: 'Work Sans', sans-serif;
+		font-size: 1rem;
+		color: typography.$text-primary-color;
+	}
+	.nav__item__symbol {
+		margin-top: -0.625rem;
+		font-size: 1.25rem;
+	}
+}
+@mixin linkGroup {
+	color: typography.$text-primary-color;
+	font-size: 0.75rem;
+	font-family: 'Work Sans', sans-serif;
+	padding-left: 1rem;
+	margin: 0.5rem 0;
+}
+
+.nav__sidebar {
+	background-color: #ffffff;
+	position: relative;
+	padding-top: 2rem;
+	height: calc(100vh - 100px - 2rem);
+	overflow-y: auto;
+	transition: ease-in-out 0.3s;
+	@media(max-width: 768px) {
+		position: fixed;
+		transform: translateX(-110%);
+	}
+	&::-webkit-scrollbar {
+		width: 0.5rem;
+	}
+	&::-webkit-scrollbar-track {
+		background: rgba(typography.$title-color, 0.2);
+	}
+	&::-webkit-scrollbar-thumb {
+		background: rgba(typography.$title-color, 0.3);
+	}
+	a {
+		text-decoration: none;
+	}
+	.nav__spacing {
+		height: 1rem;
+	}
+	.nav__divider {
+		background-color: rgba(typography.$title-color, 0.1);
+		height: 1px;
+	}
+	.link__group__text {
+		@include linkGroup();
+		text-transform: uppercase;
+		color: typography.$text-primary-color;
+	}
+	.nav__item {
+		@include navItemBase();
+		opacity: 0.7;
+		&:hover {
+			background-color: rgba(typography.$text-secondary-color, 0.06);
+			border-left: 3px solid typography.$text-secondary-color;
+			opacity: 1;
+		}		
+	}
+	.nav__item_bright {
+		@include navItemBase();
+	}
+	.nav__versionText {
+		@include linkGroup();
+		color: typography.$title-color;
+	}
+}

@@ -1,0 +1,45 @@
+@use './styles/typography.scss';
+
+html {
+	font-size: 16;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+
+@font-face {
+	font-family: 'Avenir Next', sans-serif;
+	src: url('/public/fonts/avenir/AvenirNextLTPro-Regular.otf');
+}
+
+@font-face {
+	font-family: 'Avenir Next', sans-serif;
+	src: url('/public/fonts/avenir/AvenirNextLTPro-Bold.otf');
+	font-weight: 700;
+}
+
+@mixin spinner {
+	display: inline-block;
+	width: 80px;
+	height: 80px;
+	&:after {
+		content: " ";
+		display: block;
+		width: 64px;
+		height: 64px;
+		margin: 8px;
+		border-radius: 50%;
+		border: 6px solid typography.$title-color;
+		border-color: typography.$title-color transparent typography.$title-color transparent;
+		animation: spin 1.2s linear infinite;
+	}
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+}
