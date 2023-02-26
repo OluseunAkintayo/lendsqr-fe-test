@@ -2,8 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import Card from './Card';
 import './users.scss';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Menu, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
 
 type UserProps = {
 	createdAt: string;
@@ -65,7 +66,6 @@ const Users: () => JSX.Element = () => {
 				setError("Unable to load users");
 				setLoading(false);
 			}
-			console.log(response);
 		} catch (error) {
 			console.log(error);
 			setLoading(false);
@@ -73,9 +73,15 @@ const Users: () => JSX.Element = () => {
 		}
 	}
 
+	const saveUser = (user: UserProps): void => localStorage.setItem('user', JSON.stringify(user));
+
 	React.useEffect((): void => {
 		getUsers();
 	}, []);
+
+	// filter menu
+	const [filterMenu, setFilterMenu] = React.useState<null | HTMLElement>(null);
+	const openFilterMenu = (e: React.MouseEvent<HTMLElement>) => setFilterMenu(e.currentTarget);
 
 	return (
 		<div className="users__container">
@@ -87,7 +93,7 @@ const Users: () => JSX.Element = () => {
 				<Card icon="/icons/savings-users-dashboard.png" title="Users with savings" value={102453} />
 			</div>
 			<div className="users__tableWrapper">
-				<TableContainer component={Paper} sx={{ minHeight: 440, maxHeight: 'calc(100vh - 400px - 3rem)', borderRadius: 2, boxShadow: '3px 5px 20px rgba(0, 0, 0, 0.04)' }}>
+				<TableContainer component={Paper} className="mui__table__container">
 					{
 						loading ?
 						<div className="loadingContainer">
@@ -103,13 +109,13 @@ const Users: () => JSX.Element = () => {
 											<TableCell>
 												<div className="users__tableColumnTitle">
 													<span className="users__tableColumnTitleText">organization</span>
-													<img src="/icons/filter-icon.png" draggable="false" className="users__tableColumnTitleIcon" />
+													<img src="/icons/filter-icon.png" draggable="false" className="users__tableColumnTitleIcon" onClick={openFilterMenu} />
 												</div>
 											</TableCell>
 											<TableCell>
 												<div className="users__tableColumnTitle">
 													<span className="users__tableColumnTitleText">username</span>
-													<img src="/icons/filter-icon.png" draggable="false" className="users__tableColumnTitleIcon" />
+													<img src="/icons/filter-icon.png" draggable="false" className="users__tableColumnTitleIcon" onClick={openFilterMenu} />
 												</div>
 											</TableCell>
 											<TableCell>
@@ -140,23 +146,25 @@ const Users: () => JSX.Element = () => {
 								</TableHead>
 								<TableBody>
 									{users
-										// .sort((a: UserProps, b: UserProps) => a.orgName.localeCompare(b.orgName))
-										.map((item: UserProps) => (
-										<TableRow className="users__tableCellRow">
+										.sort((a: UserProps, b: UserProps) => a.userName.localeCompare(b.userName))
+										.map((user: UserProps) => (
+										<TableRow className="users__tableCellRow" key={user.id}>
 											<TableCell>
-												<span className="users__tableCellContent">{item.orgName}</span>
-											</TableCell>
-											<TableCell>
-												<span className="users__tableCellContent">{item.userName}</span>
+												<div className="users__tableCellContent">{user.orgName}</div>
 											</TableCell>
 											<TableCell>
-												<span className="users__tableCellContent">{item.email}</span>
+												<div className="users__tableCellContent">
+													<Link to={`/users/${user.id}`} onClick={() => saveUser(user)}>{user.userName}</Link>
+												</div>
 											</TableCell>
-											<TableCell sx={{ width: 200 }}>
-												<span className="users__tableCellContent">{item.phoneNumber}</span>
+											<TableCell>
+												<div className="users__tableCellContent">{user.email}</div>
 											</TableCell>
-											<TableCell sx={{ width: 200 }}>
-												<span className="users__tableCellContent">{dayjs(item.createdAt).format("MMM D, YYYY h:mm A")}</span>
+											<TableCell>
+												<div className="users__tableCellContent expanded-cellWidth">{user.phoneNumber}</div>
+											</TableCell>
+											<TableCell>
+												<div className="users__tableCellContent expanded-cellWidth">{dayjs(user.createdAt).format("MMM D, YYYY h:mm A")}</div>
 											</TableCell>
 										</TableRow>
 									))}
@@ -166,6 +174,74 @@ const Users: () => JSX.Element = () => {
 					}
 				</TableContainer>
 			</div>
+			<React.Fragment>
+				<Menu
+					keepMounted
+					sx={{ mt: '12px', ml: -4, boxShadow: 0 }}
+					anchorEl={filterMenu}
+					open={Boolean(filterMenu)}
+					onClose={() => setFilterMenu(null)}
+					anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+					transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+					PaperProps={{
+						elevation: 0,
+						sx: {
+							overflow: 'visible',
+							boxShadow: '0px 1px 4px 1px rgba(0,0,0,0.02)',
+							border: '1px solid rgba(84, 95, 125, 0.14)',
+							mt: 1, p: 2, width: '270px',
+							background: '#FFFFFF',
+							'& .MuiAvatar-root': {
+								width: 32,
+								height: 32,
+								ml: -0.5,
+								mr: 1,
+							}
+						},
+					}}
+				>
+					<form className="users__filter">
+						<div className="filter__formItem">
+							<label htmlFor="org">Organization</label>
+							<input type="text" list="organization" placeholder='Select' />
+							<datalist id="organization">
+								<option value="First Org" />
+								<option value="second Org" />
+							</datalist>
+						</div>
+						<div className="filter__formItem">
+							<label htmlFor="username">Username</label>
+							<input name="username" placeholder="User" />
+						</div>
+						<div className="filter__formItem">
+							<label htmlFor="email">Email</label>
+							<input name="email" placeholder="Email" />
+						</div>
+						<div className="filter__formItem">
+							<label htmlFor="date">Date</label>
+							<input name="date" placeholder="Date" type="date" />
+						</div>
+						<div className="filter__formItem">
+							<label htmlFor="phone">Phone</label>
+							<input name="phone" placeholder="Phone Number" />
+						</div>
+						<div className="filter__formItem">
+							<label htmlFor="status">Phone</label>
+							<select className="filter__formItem">
+								<option>Select</option>
+								<option>Active</option>
+								<option>Blacklisted</option>
+								<option>Inactive</option>
+								<option>Pending</option>
+							</select>
+						</div>
+						<div className="filter__btnRow">
+							<button type="button">Reset</button>
+							<button type="button">Filter</button>
+						</div>
+					</form>
+				</Menu>
+			</React.Fragment>
 		</div>
 	)
 }
