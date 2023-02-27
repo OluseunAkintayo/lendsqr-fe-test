@@ -122,7 +122,7 @@ const Sidebar = (props: Props) => {
 			<div className="nav__spacing" />
 			<div className="nav__divider" />
 			<div className="nav__spacing" />
-			<Link to="/">
+			<Link to="/auth/login">
 				<div className="nav__item_bright">
 					<img className="nav__item__icon" src="/icons/logout.png" alt="" />
 					<span className="nav__item__text">Logout</span>

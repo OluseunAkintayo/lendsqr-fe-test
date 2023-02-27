@@ -9,6 +9,12 @@
 	border: 1px solid typography.$title-color;
 	padding: 0 0.5rem;
 }
+@mixin pageTitle {
+	color: typography.$title-color;
+	font-family: typography.$font-sans;
+	font-weight: 500;
+	font-size: 1.5rem;
+}
 
 .users__container {
 	.loadingContainer {
@@ -21,10 +27,7 @@
 	}
 
 	.page__title {
-		color: typography.$title-color;
-		font-family: typography.$font-sans;
-		font-weight: 500;
-		font-size: 1.5rem;
+		@include pageTitle();
 	}
 
 	.cards_row {

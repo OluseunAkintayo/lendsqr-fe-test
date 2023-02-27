@@ -1,0 +1,216 @@
+@use '../../../index.scss';
+@use '../../../styles/typography.scss';
+@use '../users.scss';
+
+@mixin detailsBox {
+	padding: 1rem;
+	border-radius: 0.5rem;
+	background: #FFFFFF;
+	border: 1px solid rgba(33, 63, 125, 0.06);
+	box-shadow: 3px 5px 20px rgba(0, 0, 0, 0.04);
+	margin: 1rem 0;
+}
+
+@mixin title {
+	font-family: typography.$font-sans;
+	color: typography.$title-color;
+	font-weight: 500;
+	line-height: 1.625rem;
+}
+
+.userInfo__loading {
+	height: 100%;
+	display: grid;
+	place-items: center;
+	.loading {
+		@include index.spinner;
+	}
+}
+
+.userInfo {
+	.userInfo__backArrow {
+		all: unset;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: typography.$text-primary-color;
+		cursor: pointer;
+		&:hover {
+			span {
+				&:nth-child(2) {
+					text-decoration: underline;
+				}
+			}
+		}
+		span {
+			&:first-child {
+				font-size: 1.5rem;
+			}
+			&:nth-child(2) {
+				font-size: 1rem;
+				font-family: typography.$font-sans;
+				color: typography.$text-primary-color;
+			}
+		}
+	}
+	.topbar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.userInfo__pageTitle {
+			@include users.pageTitle();
+			margin: 1rem 0;
+		}
+		.topbar__btnrow {
+			display: flex;
+			gap: 1rem;
+			button {
+				all: unset;
+				height: 2.5rem;
+				width: 10.5rem;
+				text-align: center;
+				border-radius: 0.5rem;
+				text-transform: uppercase;
+				font-weight: 600;
+				font-family: typography.$font-sans;
+				font-size: 0.75rem;
+				letter-spacing: 0.1em;
+				cursor: pointer;
+				transition: all 0.2s ease-in;
+				&:hover {
+					letter-spacing: 0.125em;
+				}
+			}
+			.blacklist {
+				border: 1px solid #E4033B;
+				color: #E4033B;
+				&:hover {
+					background-color: rgba(#E4033B, 0.05);
+				}
+			}
+			.activate {
+				color: typography.$text-secondary-color;
+				border: 1px solid typography.$text-secondary-color;
+				&:hover {
+					background-color: rgba(typography.$text-secondary-color, 0.1);
+				}
+			}
+		}
+	}
+	.userSummary {
+		@include detailsBox();
+		padding-bottom: 0;
+
+		.userSummary__topMenu {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			.gap {
+				width: 1px;
+				min-height: 80px;
+				background-color: rgba(typography.$text-primary-color, 0.2);
+			}
+			.name__avatar {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				.user_avatar {
+					width: 100%;
+					max-width: 100px;
+					img {
+						width: 100%;
+						border-radius: 50%;
+					}
+				}
+				.username {
+					display: grid;
+					gap: 0.5rem;
+					.username__fullName {
+						@include title();
+						font-size: 1.375rem;
+					}
+					.userAlias {
+						color: typography.$text-primary-color;
+						font-size: 0.875rem;
+						font-family: typography.$font-sans;
+					}
+				}
+			}
+			.user__tier {
+				p {
+					font-family: typography.$font-sans;
+					color: typography.$text-primary-color;
+					font-weight: 500;
+					font-size: 0.875rem;
+				}
+			}
+			.user__accountInfo {
+				.balance {
+					@include title();
+				}
+				.bankInfo {
+					font-family: typography.$font-sans;
+					color: typography.$title-color;
+					font-weight: 400;
+					font-size: 0.75rem;
+				}
+			}
+		}
+		.userSummary__bottomMenu {
+			margin-top: 1rem;
+			button {
+				all: unset;
+				width: 10.5rem;
+				font-family: typography.$font-sans;
+				color: rgba(0, 0, 0, 0.8);
+				text-align: center;
+				line-height: 19px;
+				font-size: 1rem;
+				padding-bottom: 0.25rem;
+				margin-bottom: 0.25rem;
+				cursor: pointer;
+				&:first-child {
+					color: typography.$text-secondary-color;
+					border-bottom: 2px solid typography.$text-secondary-color;
+				}
+			}
+		}
+	}
+	.userInfo__details {
+		@include detailsBox();
+		.section__title {
+			@include title();
+			font-size: 1rem;
+			margin-bottom: 1rem;
+		}
+		.itemTitle {
+			font-family: typography.$font-sans;
+			color: typography.$text-primary-color;
+			font-size: 0.75rem;
+			text-transform: uppercase;
+			line-height: 0.875rem;
+			font-weight: 400;
+			margin-bottom: 0.375rem;
+		}
+		.itemValue {
+			font-family: typography.$font-sans;
+			font-weight: 500;
+			font-size: 1rem;
+			line-height: 1.1875rem;
+			color: typography.$text-primary-color;
+			word-wrap: break-word;
+			a {
+				color: inherit;
+				text-decoration: none;
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+		.divider {
+			background-color: rgba(typography.$title-color, 0.1);
+			height: 2px;
+			margin: 2rem 0 1.5rem 0;
+		}
+	}
+}

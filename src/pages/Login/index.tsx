@@ -14,6 +14,10 @@ const Login = () => {
 		localStorage.setItem('token', password.split('').reverse().join(''));
 		route("/");
 	}
+
+	React.useEffect(() => {
+		localStorage.clear();
+	}, []);
 	
 	return (
 		<div className="login__container">

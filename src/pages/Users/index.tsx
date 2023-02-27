@@ -49,6 +49,10 @@ type UserProps = {
 	id: string;
 }
 
+type BankProps = {
+	name: string;
+}
+
 const Users: () => JSX.Element = () => {
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [error, setError] = React.useState<any>(null);
@@ -72,6 +76,27 @@ const Users: () => JSX.Element = () => {
 			setError(error);
 		}
 	}
+
+	const getBanks = async (): Promise<void> => {
+		const URL: string = "https://nigerianbanks.xyz/";
+		try {
+			const response = await axios.get(URL);
+			if(response.status === 200) {
+				let banks = response.data.map((item: BankProps) => {
+					return {
+						name: item.name
+					}
+				});
+				localStorage.setItem('banks', JSON.stringify(banks));
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}
+	React.useEffect(() => {
+		getBanks();
+	}, []);
+
 
 	const saveUser = (user: UserProps): void => localStorage.setItem('user', JSON.stringify(user));
 
