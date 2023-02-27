@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import './userInfo.scss';
+import './userinfo.scss';
 import { Grid, Rating } from '@mui/material';
 
 type UserProps = {
