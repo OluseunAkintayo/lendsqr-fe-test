@@ -60,8 +60,8 @@ const userInfo = () => {
 		if(storedUser) {
 			let resolvedUser: UserProps = JSON.parse(storedUser);
 			setUser(resolvedUser);
-			setLoading(true);
-			setTimeout(() => setLoading(false), 2000);
+			// setLoading(true);
+			// setTimeout(() => setLoading(false), 2000);
 		}
 	}, [storedUser]);
 
@@ -121,12 +121,26 @@ const userInfo = () => {
 							</div>
 						</div>
 						<div className="userSummary__bottomMenu">
-							<button>General Details</button>
-							<button>Documents</button>
-							<button>Bank Details</button>
-							<button>Loans</button>
-							<button>Savings</button>
-							<button>App and System</button>
+							<Grid container rowSpacing={2}>
+								<Grid item xs={6} md={3} lg={2}>
+									<button className="active">General Details</button>
+								</Grid>
+								<Grid item xs={6} md={3} lg={2}>
+									<button>Documents</button>
+								</Grid>
+								<Grid item xs={6} md={3} lg={2}>
+									<button>Bank Details</button>
+								</Grid>
+								<Grid item xs={6} md={3} lg={2}>
+									<button>Loans</button>
+								</Grid>
+								<Grid item xs={6} md={3} lg={2}>
+									<button>Savings</button>
+								</Grid>
+								<Grid item xs={6} md={3} lg={2}>
+									<button>App and System</button>
+								</Grid>
+							</Grid>
 						</div>
 					</div>
 					<div className="userInfo__details">

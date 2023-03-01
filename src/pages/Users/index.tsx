@@ -64,15 +64,15 @@ type UsernameProps = {
 const Users: () => JSX.Element = () => {
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [error, setError] = React.useState<any>(null);
-	// const [users, setUsers] = React.useState<UserProps[] | null>([]);
 	
 	// handle user table pagination
-	let [tempUsers, setTempUsers] = React.useState<UserProps[] | null>([]);
+	let [users, setUsers] = React.useState<UserProps[] | null>([]);
 	const [currentPage, setCurrentPage] = React.useState<number>(1);
 	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
+	const handleRowsChange = (e: React.ChangeEvent<HTMLSelectElement>) => setRowsPerPage(Number(e.target.value));
 	const lastItemIndex = currentPage * rowsPerPage;
 	const firstItemIndex = lastItemIndex - rowsPerPage;
-	let currentItems = tempUsers?.slice(firstItemIndex, lastItemIndex);
+	let currentItems = users?.slice(firstItemIndex, lastItemIndex);
 
 	const paginate = (item: number) => setCurrentPage(item);
 	const pageChange = (e: any) => setCurrentPage(e.selected + 1);
@@ -92,7 +92,7 @@ const Users: () => JSX.Element = () => {
 	const onSubmit = (e: React.FormEvent): void => {
 		e.preventDefault();
 		let { orgName, username, email, phone } = filter;
-		let filteredData = tempUsers;
+		let filteredData = users;
 		if(filter.username.trim().length > 0 && filteredData) {
 			filteredData = filteredData?.filter((item: UserProps) => item.userName.toLowerCase().includes(username.toLowerCase().trim()));
 		}
@@ -105,14 +105,14 @@ const Users: () => JSX.Element = () => {
 		if(phone.trim().length > 0 && filteredData) {
 			filteredData = filteredData?.filter((item: UserProps) => item.phoneNumber.toLowerCase().includes(phone.toLowerCase().trim()));
 		}
-		setTempUsers(filteredData);
+		setUsers(filteredData);
 		setFilterMenu(null);
 	}
 
 	const onReset = (): void => {
 		setFilter({ orgName: '', username: '', email: '', date: dayjs().format("YYYY-MM-DD"), phone: '', status: '' });
 		const retrievedUsers = localStorage.getItem('users') as string | null;
-		if(retrievedUsers) setTempUsers(JSON.parse(retrievedUsers));
+		if(retrievedUsers) setUsers(JSON.parse(retrievedUsers));
 	}
 
 	const getData = async (): Promise<void> => {
@@ -124,7 +124,7 @@ const Users: () => JSX.Element = () => {
 			if(response.status === 200) {
 				let data = response?.data.sort((a: UserProps, b: UserProps) => a.userName.localeCompare(b.userName));
 				localStorage.setItem('users', JSON.stringify(data));
-				setTempUsers(data);
+				setUsers(data);
 				const orgData = response.data.map((item: UserProps) => {
 					return { name: item.orgName };
 				});
@@ -193,7 +193,7 @@ const Users: () => JSX.Element = () => {
 						: (
 							error ?
 							<div className="loadingContainer">An error has occurred</div>
-							: (!loading && tempUsers) &&
+							: (!loading && users) &&
 							<Table stickyHeader aria-label="users table">
 								<TableHead>
 									<TableRow>
@@ -263,15 +263,24 @@ const Users: () => JSX.Element = () => {
 						)
 					}
 				</TableContainer>
-				<ReactPaginate
-					onPageChange={pageChange}
-					pageCount={tempUsers ? Math.ceil(tempUsers?.length / rowsPerPage) : 0}
-					previousLabel={"<"}
-					nextLabel={">"}
-					containerClassName={"react-paginate"}
-					pageLinkClassName={"react-paginate-item"}
-					activeClassName={"currentPage"}
-				/>
+				<div className="users__tableFooter">
+					<div className="rowsCount">
+						<span>Showing</span>
+						<select className="rowsCount__select" onChange={handleRowsChange}>
+							{ [10, 20, 30, 50].map((item: number) => (<option key={item} value={item}>{item}</option>)) }
+						</select>
+						<span>of {users?.length}</span>
+					</div>
+					<ReactPaginate
+						onPageChange={pageChange}
+						pageCount={users ? Math.ceil(users?.length / rowsPerPage) : 0}
+						previousLabel={"<"}
+						nextLabel={">"}
+						containerClassName={"react-paginate"}
+						pageLinkClassName={"react-paginate-item"}
+						activeClassName={"currentPage"}
+					/>
+				</div>
 			</div>
 			<React.Fragment>
 				<Menu

@@ -43,6 +43,7 @@
 	@media(max-width: 768px) {
 		position: fixed;
 		transform: translateX(-110%);
+		z-index: 3;
 	}
 	&::-webkit-scrollbar {
 		width: 0.5rem;

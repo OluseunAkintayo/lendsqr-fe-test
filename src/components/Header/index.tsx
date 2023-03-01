@@ -9,14 +9,14 @@ const Header = () => {
 		if(userName) setUser(userName);
 	}, [userName]);
 
+	const openMenu = () => document.getElementById("header__right")?.classList.toggle("openUserMenu")
+
 	return (
 		<header className="header">
 			<div className="header__logoContainer">
-				<Link to="/">
-					<img src="/img/logo.svg" alt="Logo" />
-				</Link>
+				<Link to="/"><img src="/img/logo.svg" alt="Logo" /></Link>
 			</div>
-			<div className="header__right">
+			<div className="header__right" id="header__right">
 				<div className="header__searchBar">
 					<input type="text" placeholder="Search for anything" />
 					<div>
@@ -32,6 +32,12 @@ const Header = () => {
 						<span>&#9660;</span>
 					</div>
 				</div>
+			</div>
+			<div className="userMenuIcon" onClick={openMenu}>
+				<span />
+				<span />
+				<span />
+				<span />
 			</div>
 		</header>
 	)

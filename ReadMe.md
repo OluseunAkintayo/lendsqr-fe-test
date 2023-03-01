@@ -17,8 +17,8 @@ As the application is protected, kindly use the following credentials to access 
 ###### Users
 This module lists all users from a provided API. The users are presented in a paginated table of 10 rows per page. The table includes some filtering parameters. A user's full information is revealed when their username is clicked.
 
-######Up next: Guarantors module
+###### Up next: Guarantors module
 
 
-###Contribution
+### Contribution
 All contributions would be appreciated.
