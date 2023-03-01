@@ -1,10 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import Card from './Card';
-import './users.scss';
 import { Menu, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import Paginate from './Paginate';
+import './users.scss';
 
 type UserProps = {
 	createdAt: string;
@@ -52,19 +54,81 @@ type UserProps = {
 type BankProps = {
 	name: string;
 }
+type OrgProps = {
+	name: string;
+}
+type UsernameProps = {
+	name: string;
+}
 
 const Users: () => JSX.Element = () => {
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [error, setError] = React.useState<any>(null);
-	const [users, setUsers] = React.useState<UserProps[] | null>(null);
-	const getUsers = async (): Promise<void> => {
+	// const [users, setUsers] = React.useState<UserProps[] | null>([]);
+	
+	// handle user table pagination
+	let [tempUsers, setTempUsers] = React.useState<UserProps[] | null>([]);
+	const [currentPage, setCurrentPage] = React.useState<number>(1);
+	const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
+	const lastItemIndex = currentPage * rowsPerPage;
+	const firstItemIndex = lastItemIndex - rowsPerPage;
+	let currentItems = tempUsers?.slice(firstItemIndex, lastItemIndex);
+
+	const paginate = (item: number) => setCurrentPage(item);
+	const pageChange = (e: any) => setCurrentPage(e.selected + 1);
+
+	// filter params
+	const [filterMenu, setFilterMenu] = React.useState<null | HTMLElement>(null);
+	const [organization, setOrganization] = React.useState<OrgProps[] | null>([]);
+	const [filter, setFilter] = React.useState({ orgName: '', username: '', email: '', date: dayjs().format("YYYY-MM-DD"), phone: '', status: '' });
+	const handleOrgNameChange = (e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, orgName: e.target.value });
+	const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, username: e.target.value });
+	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, email: e.target.value });
+	const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, date: e.target.value });
+	const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => setFilter({ ...filter, phone: e.target.value });
+	const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => setFilter({ ...filter, status: e.target.value });
+	const openFilterMenu = (e: React.MouseEvent<HTMLElement>) => setFilterMenu(e.currentTarget);
+
+	const onSubmit = (e: React.FormEvent): void => {
+		e.preventDefault();
+		let { orgName, username, email, phone } = filter;
+		let filteredData = tempUsers;
+		if(filter.username.trim().length > 0 && filteredData) {
+			filteredData = filteredData?.filter((item: UserProps) => item.userName.toLowerCase().includes(username.toLowerCase().trim()));
+		}
+		if(orgName.trim().length > 0 && filteredData) {
+			filteredData = filteredData?.filter((item: UserProps) => item.orgName.toLowerCase().includes(orgName.toLowerCase().trim()));
+		}
+		if(email.trim().length > 0 && filteredData) {
+			filteredData = filteredData?.filter((item: UserProps) => item.email.toLowerCase().includes(email.toLowerCase().trim()));
+		}
+		if(phone.trim().length > 0 && filteredData) {
+			filteredData = filteredData?.filter((item: UserProps) => item.phoneNumber.toLowerCase().includes(phone.toLowerCase().trim()));
+		}
+		setTempUsers(filteredData);
+		setFilterMenu(null);
+	}
+
+	const onReset = (): void => {
+		setFilter({ orgName: '', username: '', email: '', date: dayjs().format("YYYY-MM-DD"), phone: '', status: '' });
+		const retrievedUsers = localStorage.getItem('users') as string | null;
+		if(retrievedUsers) setTempUsers(JSON.parse(retrievedUsers));
+	}
+
+	const getData = async (): Promise<void> => {
 		setLoading(true);
 		const URL = "https://6270020422c706a0ae70b72c.mockapi.io/lendsqr/api/v1/users";
 		const config = { url: URL, method: 'GET' };
 		try {
 			const response = await axios.request(config);
 			if(response.status === 200) {
-				setUsers(response?.data);
+				let data = response?.data.sort((a: UserProps, b: UserProps) => a.userName.localeCompare(b.userName));
+				localStorage.setItem('users', JSON.stringify(data));
+				setTempUsers(data);
+				const orgData = response.data.map((item: UserProps) => {
+					return { name: item.orgName };
+				});
+				setOrganization(orgData);
 				setLoading(false);
 			} else {
 				setError("Unable to load users");
@@ -93,20 +157,16 @@ const Users: () => JSX.Element = () => {
 			console.log(error);
 		}
 	}
+
 	React.useEffect(() => {
 		getBanks();
 	}, []);
 
-
-	const saveUser = (user: UserProps): void => localStorage.setItem('user', JSON.stringify(user));
-
 	React.useEffect((): void => {
-		getUsers();
+		getData();
 	}, []);
 
-	// filter menu
-	const [filterMenu, setFilterMenu] = React.useState<null | HTMLElement>(null);
-	const openFilterMenu = (e: React.MouseEvent<HTMLElement>) => setFilterMenu(e.currentTarget);
+	const saveUser = (user: UserProps): void => localStorage.setItem('user', JSON.stringify(user));
 
 	return (
 		<div className="users__container">
@@ -118,6 +178,12 @@ const Users: () => JSX.Element = () => {
 				<Card icon="/icons/savings-users-dashboard.png" title="Users with savings" value={102453} />
 			</div>
 			<div className="users__tableWrapper">
+			{/* <Paginate
+				rowsPerPage={rowsPerPage}
+				totalCount={tempUsers ? tempUsers?.length : 0}
+				paginate={paginate}
+				currentPage={currentPage}
+			/> */}
 				<TableContainer component={Paper} className="mui__table__container">
 					{
 						loading ?
@@ -127,7 +193,7 @@ const Users: () => JSX.Element = () => {
 						: (
 							error ?
 							<div className="loadingContainer">An error has occurred</div>
-							: (!loading && users) &&
+							: (!loading && tempUsers) &&
 							<Table stickyHeader aria-label="users table">
 								<TableHead>
 									<TableRow>
@@ -170,9 +236,8 @@ const Users: () => JSX.Element = () => {
 									</TableRow>
 								</TableHead>
 								<TableBody>
-									{users
-										.sort((a: UserProps, b: UserProps) => a.userName.localeCompare(b.userName))
-										.map((user: UserProps) => (
+									{currentItems &&
+									currentItems.map((user: UserProps) => (
 										<TableRow className="users__tableCellRow" key={user.id}>
 											<TableCell>
 												<div className="users__tableCellContent">{user.orgName}</div>
@@ -198,6 +263,15 @@ const Users: () => JSX.Element = () => {
 						)
 					}
 				</TableContainer>
+				<ReactPaginate
+					onPageChange={pageChange}
+					pageCount={tempUsers ? Math.ceil(tempUsers?.length / rowsPerPage) : 0}
+					previousLabel={"<"}
+					nextLabel={">"}
+					containerClassName={"react-paginate"}
+					pageLinkClassName={"react-paginate-item"}
+					activeClassName={"currentPage"}
+				/>
 			</div>
 			<React.Fragment>
 				<Menu
@@ -225,34 +299,33 @@ const Users: () => JSX.Element = () => {
 						},
 					}}
 				>
-					<form className="users__filter">
+					<form className="users__filter" onSubmit={onSubmit} autoComplete="off">
 						<div className="filter__formItem">
 							<label htmlFor="org">Organization</label>
-							<input type="text" list="organization" placeholder='Select' />
+							<input type="text" list="organization" placeholder='Select' onChange={handleOrgNameChange} value={filter.orgName} />
 							<datalist id="organization">
-								<option value="First Org" />
-								<option value="second Org" />
+								{organization?.map((item: OrgProps) => (<option value={item.name} key={item.name} />))}
 							</datalist>
 						</div>
 						<div className="filter__formItem">
 							<label htmlFor="username">Username</label>
-							<input name="username" placeholder="User" />
+							<input name="username" placeholder="User" onChange={handleUsernameChange} value={filter.username} />
 						</div>
 						<div className="filter__formItem">
 							<label htmlFor="email">Email</label>
-							<input name="email" placeholder="Email" />
+							<input name="email" placeholder="Email" onChange={handleEmailChange} value={filter.email} />
 						</div>
 						<div className="filter__formItem">
 							<label htmlFor="date">Date</label>
-							<input name="date" placeholder="Date" type="date" />
+							<input name="date" placeholder="Date" type="date" onChange={handleDateChange} value={filter.date} />
 						</div>
 						<div className="filter__formItem">
 							<label htmlFor="phone">Phone</label>
-							<input name="phone" placeholder="Phone Number" />
+							<input name="phone" placeholder="Phone Number" onChange={handlePhoneChange} value={filter.phone} />
 						</div>
 						<div className="filter__formItem">
-							<label htmlFor="status">Phone</label>
-							<select className="filter__formItem">
+							<label htmlFor="status">Status</label>
+							<select className="filter__formItem" onChange={handleStatusChange} value={filter.status}>
 								<option>Select</option>
 								<option>Active</option>
 								<option>Blacklisted</option>
@@ -261,8 +334,8 @@ const Users: () => JSX.Element = () => {
 							</select>
 						</div>
 						<div className="filter__btnRow">
-							<button type="button">Reset</button>
-							<button type="button">Filter</button>
+							<button type="button" onClick={onReset}>Reset</button>
+							<button type="submit">Filter</button>
 						</div>
 					</form>
 				</Menu>

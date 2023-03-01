@@ -14,7 +14,7 @@ const App = (props: Props) => {
       <Routes>
         <Route path="/auth/login" element={<Login />} />
         <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Users />} />
           <Route path="/users" element={<Users />} />
           <Route path="/users/:userId" element={<UserInfo />} />
         </Route>
