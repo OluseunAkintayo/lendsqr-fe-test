@@ -127,7 +127,23 @@
 		}
 		.users__tableCellRow {
 			&:hover {
-				background-color: rgba(typography.$text-primary-color, 0.2);
+				background-color: rgba(typography.$text-primary-color, 0.1);
+			}
+			.btn-active {
+				all: unset;
+				border-radius: 1rem;
+				padding: 0.5rem 1rem;
+				cursor: pointer;
+				font-family: typography.$font-sans;
+				background-color: rgba(#39CD62, 0.06);
+				color: #39CD62;
+			}
+			.btn-inactive {
+				all: unset;
+				border-radius: 1rem;
+				padding: 0.5rem 1rem;
+				cursor: pointer;
+				font-family: typography.$font-sans;
 			}
 		}
 		.users__tableCellContent {

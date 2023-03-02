@@ -1,5 +1,43 @@
 @use '../../styles/typography.scss';
 
+@mixin searchBar {
+	width: 100%;
+	max-width: 360px;
+	display: flex;
+	input {
+		height: 2.5rem;
+		width: 100%;
+		border-radius: 0.5rem 0 0 0.5rem;
+		border: 1px solid typography.$title-color;
+		border-right: transparent;
+		outline: none;
+		padding: 0 0.5rem;
+		color: rgba(typography.$text-primary-color, 0.7);
+		&::placeholder {
+			font-size: 0.875rem;
+			color: rgba(typography.$text-primary-color, 0.7);
+		}
+	}
+	div {
+		background-color: typography.$text-secondary-color;
+		border: 1px solid typography.$text-secondary-color;
+		width: 3.5rem;
+		border-radius: 0 0.5rem 0.5rem 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-left: -2px;
+		cursor: pointer;
+		transition: all ease-in-out 0.2s;
+		&:hover {
+			background-color: rgba(typography.$text-secondary-color, 0.8);
+		}
+		img {
+			width: 1.5rem;
+		}
+	}
+}
+
 .header {
 	box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
 	height: 100px;
@@ -45,36 +83,7 @@
 		}
 	
 		.header__searchBar {
-			width: 100%;
-			max-width: 360px;
-			display: flex;
-			input {
-				height: 2.5rem;
-				width: 100%;
-				border-radius: 0.5rem 0 0 0.5rem;
-				border: 1px solid typography.$title-color;
-				border-right: transparent;
-				outline: none;
-				padding: 0 0.5rem;
-				color: rgba(typography.$text-primary-color, 0.7);
-				&::placeholder {
-					font-size: 0.875rem;
-					color: rgba(typography.$text-primary-color, 0.7);
-				}
-			}
-			div {
-				background-color: typography.$text-secondary-color;
-				border: 1px solid typography.$text-secondary-color;
-				width: 3.5rem;
-				border-radius: 0 0.5rem 0.5rem 0;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				margin-left: -2px;
-				img {
-					width: 1.5rem;
-				}
-			}
+			@include searchBar();
 		}
 	
 		.header__userMenu {

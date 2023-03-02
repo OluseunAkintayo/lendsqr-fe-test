@@ -5,8 +5,20 @@ import './sidebar.scss';
 type Props = {}
 
 const Sidebar = (props: Props) => {
+	const userName = localStorage.getItem('username');
+	const [user, setUser] = React.useState<string>('');
+	React.useEffect(() => {
+		if(userName) setUser(userName);
+	}, [userName]);
+
 	return (
 		<nav className="nav__sidebar" id="nav__sidebar">
+			<div className="nav__sidebar__searchBar">
+				<input type="text" placeholder="Search for anything" />
+				<div>
+					<img src="/icons/search.svg" alt="Search" />
+				</div>
+			</div>
 			<div className="nav__item">
 				<img className="nav__item__icon" src="/icons/briefcase.png" alt="" />
 				<span className="nav__item__text">Switch Organization</span>
@@ -122,6 +134,10 @@ const Sidebar = (props: Props) => {
 			<div className="nav__spacing" />
 			<div className="nav__divider" />
 			<div className="nav__spacing" />
+			<div className="userInfo">
+				<img src="/img/avatar.png" />
+				<p className="link__group__text">{user}</p>
+			</div>
 			<Link to="/auth/login">
 				<div className="nav__item_bright">
 					<img className="nav__item__icon" src="/icons/logout.png" alt="" />

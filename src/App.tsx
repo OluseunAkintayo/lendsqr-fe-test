@@ -6,9 +6,7 @@ import Users from './pages/Users';
 import UserInfo from './pages/Users/UserInfo';
 import PrivateRoute from './utils/PrivateRoute';
 
-type Props = {}
-
-const App = (props: Props) => {
+const App = () => {
   return (
     <BrowserRouter>
       <Routes>

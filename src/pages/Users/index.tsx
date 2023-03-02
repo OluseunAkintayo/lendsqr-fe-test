@@ -256,6 +256,9 @@ const Users: () => JSX.Element = () => {
 											<TableCell>
 												<div className="users__tableCellContent expanded-cellWidth">{dayjs(user.createdAt).format("MMM D, YYYY h:mm A")}</div>
 											</TableCell>
+											<TableCell>
+												<button className="btn-inactive">Inactive</button>
+											</TableCell>
 										</TableRow>
 									))}
 								</TableBody>

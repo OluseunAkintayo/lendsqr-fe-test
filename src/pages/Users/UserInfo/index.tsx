@@ -60,8 +60,8 @@ const userInfo = () => {
 		if(storedUser) {
 			let resolvedUser: UserProps = JSON.parse(storedUser);
 			setUser(resolvedUser);
-			// setLoading(true);
-			// setTimeout(() => setLoading(false), 2000);
+			setLoading(true);
+			setTimeout(() => setLoading(false), 2000);
 		}
 	}, [storedUser]);
 
