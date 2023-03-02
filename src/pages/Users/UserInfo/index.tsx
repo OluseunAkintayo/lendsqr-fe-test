@@ -122,22 +122,22 @@ const userInfo = () => {
 						</div>
 						<div className="userSummary__bottomMenu">
 							<Grid container rowSpacing={2}>
-								<Grid item xs={6} md={3} lg={2}>
+								<Grid item xs={12} sm={6} md={3} lg={2}>
 									<button className="active">General Details</button>
 								</Grid>
-								<Grid item xs={6} md={3} lg={2}>
+								<Grid item xs={12} sm={6} md={3} lg={2}>
 									<button>Documents</button>
 								</Grid>
-								<Grid item xs={6} md={3} lg={2}>
+								<Grid item xs={12} sm={6} md={3} lg={2}>
 									<button>Bank Details</button>
 								</Grid>
-								<Grid item xs={6} md={3} lg={2}>
+								<Grid item xs={12} sm={6} md={3} lg={2}>
 									<button>Loans</button>
 								</Grid>
-								<Grid item xs={6} md={3} lg={2}>
+								<Grid item xs={12} sm={6} md={3} lg={2}>
 									<button>Savings</button>
 								</Grid>
-								<Grid item xs={6} md={3} lg={2}>
+								<Grid item xs={12} sm={6} md={3} lg={2}>
 									<button>App and System</button>
 								</Grid>
 							</Grid>

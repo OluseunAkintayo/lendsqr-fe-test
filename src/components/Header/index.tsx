@@ -9,7 +9,7 @@ const Header = () => {
 		if(userName) setUser(userName);
 	}, [userName]);
 
-	const openMenu = () => document.getElementById("header__right")?.classList.toggle("openUserMenu")
+	const openMenu = (): boolean | undefined => document.getElementById("nav__sidebar")?.classList.toggle("openMenu");
 
 	return (
 		<header className="header">
