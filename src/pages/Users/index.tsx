@@ -5,8 +5,8 @@ import { Menu, Paper, Table, TableBody, TableCell, TableContainer, TableHead, Ta
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-import Paginate from './Paginate';
 import './users.scss';
+// import Paginate from './Paginate';
 
 type UserProps = {
 	createdAt: string;
@@ -172,6 +172,11 @@ const Users: () => JSX.Element = () => {
 	}, []);
 
 	const saveUser = (user: UserProps): void => localStorage.setItem('user', JSON.stringify(user));
+
+	React.useEffect((): () => void => {
+		document.title = "Users - Lendsqr";
+		return () => null;
+	}, []);
 
 	return (
 		<div className="users__container">

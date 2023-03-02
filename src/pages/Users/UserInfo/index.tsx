@@ -75,6 +75,11 @@ const userInfo = () => {
 		}
 	}, [storedBanks]);
 
+	React.useEffect((): () => void => {
+		document.title = "User Details - Lendsqr";
+		return () => null;
+	}, []);
+
 	return (
 		<React.Fragment>
 			{
