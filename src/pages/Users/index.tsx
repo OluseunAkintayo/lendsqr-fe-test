@@ -115,6 +115,11 @@ const Users: () => JSX.Element = () => {
 		if(retrievedUsers) setUsers(JSON.parse(retrievedUsers));
 	}
 
+	const openActionsMenu = (e: React.MouseEvent<HTMLElement>) => setActionsMenu(e.currentTarget);
+	const closeActionsMenu = () => setActionsMenu(null);
+	const [actionsMenu, setActionsMenu] = React.useState<null | HTMLElement>(null);
+
+
 	const getData = async (): Promise<void> => {
 		setLoading(true);
 		const URL = "https://6270020422c706a0ae70b72c.mockapi.io/lendsqr/api/v1/users";
@@ -233,6 +238,7 @@ const Users: () => JSX.Element = () => {
 													<img src="/icons/filter-icon.png" draggable="false" className="users__tableColumnTitleIcon" />
 												</div>
 											</TableCell>
+											<TableCell />
 									</TableRow>
 								</TableHead>
 								<TableBody>
@@ -256,8 +262,27 @@ const Users: () => JSX.Element = () => {
 											<TableCell>
 												<div className="users__tableCellContent expanded-cellWidth">{dayjs(user.createdAt).format("MMM D, YYYY h:mm A")}</div>
 											</TableCell>
+											<TableCell className="action-btn">
+												<button
+													className={
+														dayjs(user.lastActiveDate) < dayjs().subtract(3, 'month') ? "btn-inactive" : (
+															dayjs(user.createdAt) > (dayjs().set('year', 2030) && dayjs().set('year', 2050)) ? "btn-pending" : (
+																dayjs(user.createdAt) > dayjs().set('year', 2090) ? "btn-blacklisted" : "btn-active"
+															)
+														)
+													}
+												>
+													{
+														dayjs(user.lastActiveDate) < dayjs().subtract(3, 'month') ? "Inactive" : (
+															dayjs(user.createdAt) > (dayjs().set('year', 2030) && dayjs().set('year', 2050)) ? "Pending" : (
+																dayjs(user.createdAt) > dayjs().set('year', 2090) ? "Blacklisted" : "Active"
+															)
+														)
+													}
+												</button>
+											</TableCell>
 											<TableCell>
-												<button className="btn-inactive">Inactive</button>
+												<div className="users__tableCellContent"><img src="/icons/more-vert.png" onClick={openActionsMenu} /></div>
 											</TableCell>
 										</TableRow>
 									))}
@@ -350,6 +375,32 @@ const Users: () => JSX.Element = () => {
 							<button type="submit">Filter</button>
 						</div>
 					</form>
+				</Menu>
+				{/* actions menu */}
+				<Menu
+					keepMounted
+					sx={{ mt: '12px', ml: -4, boxShadow: 0 }}
+					anchorEl={actionsMenu}
+					open={Boolean(actionsMenu)}
+					onClose={() => setActionsMenu(null)}
+					anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+					transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+					PaperProps={{
+						elevation: 0,
+						sx: {
+							overflow: 'visible',
+							boxShadow: '0px 1px 4px 1px rgba(0,0,0,0.02)',
+							border: '1px solid rgba(84, 95, 125, 0.14)',
+							mt: 1, minWidth: '60px',
+							background: '#FFFFFF'
+						}
+					}}
+				>
+					<div className="actions__menu">
+						<span onClick={closeActionsMenu}>View Details</span>
+						<span onClick={closeActionsMenu}>Blacklist User</span>
+						<span onClick={closeActionsMenu}>Activate User</span>
+					</div>
 				</Menu>
 			</React.Fragment>
 		</div>

@@ -129,21 +129,30 @@
 			&:hover {
 				background-color: rgba(typography.$text-primary-color, 0.1);
 			}
-			.btn-active {
-				all: unset;
-				border-radius: 1rem;
-				padding: 0.5rem 1rem;
-				cursor: pointer;
-				font-family: typography.$font-sans;
-				background-color: rgba(#39CD62, 0.06);
-				color: #39CD62;
-			}
-			.btn-inactive {
-				all: unset;
-				border-radius: 1rem;
-				padding: 0.5rem 1rem;
-				cursor: pointer;
-				font-family: typography.$font-sans;
+			.action-btn {
+				button {
+					all: unset;
+					border-radius: 1rem;
+					padding: 0.5rem 1rem;
+					// cursor: pointer;
+					font-family: typography.$font-sans;
+				}
+				.btn-active {
+					background-color: rgba(#39CD62, 0.06);
+					color: #39CD62;
+				}
+				.btn-inactive {
+					background-color: rgba(typography.$text-primary-color, 0.1);
+					color: typography.$text-primary-color;
+				}
+				.btn-pending {
+					background-color: rgba(#E9B200, 0.1);
+					color: #E9B200;
+				}
+				.btn-blacklisted {
+					color: #E4033B;
+					background-color: rgba(#E4033B, 0.1);
+				}
 			}
 		}
 		.users__tableCellContent {
@@ -158,6 +167,16 @@
 				}
 				&:active {
 					text-decoration: underline;
+				}
+			}
+			img {
+				// height: 1.5rem;
+				cursor: pointer;
+				padding: 0.5rem;
+				border-radius: 50%;
+				width: 1.5rem;
+				&:hover {
+					background-color: rgba(typography.$text-primary-color, 0.1);
 				}
 			}
 		}
@@ -195,11 +214,8 @@
 
 }
 .users__filter {
-	// padding: 1rem;
 	border-radius: 0.25rem;
 	background-color: #FFFFFF;
-	// box-shadow: 3px 5px 20px rgba(0, 0, 0, 0.04);
-	// border: 1px solid rgba(84, 95, 125, 0.14);
 	display: grid;
 	gap: 0.75rem;
 
@@ -246,6 +262,21 @@
 				border: 1px solid typography.$text-secondary-color;
 				background-color: typography.$text-secondary-color;
 			}
+		}
+	}
+}
+.actions__menu {
+	border-radius: 0.25rem;
+	span {
+		display: block;
+		padding: 0.5rem;
+		font-family: typography.$font-sans;
+		font-weight: 500;
+		font-size: 0.875rem;
+		color: typography.$text-primary-color;
+		cursor: pointer;
+		&:hover {
+			background-color: rgba(typography.$text-primary-color, 0.1);
 		}
 	}
 }
