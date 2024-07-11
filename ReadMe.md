@@ -9,7 +9,7 @@ The application is accessible at [https://lendsqr-techydna.vercel.app/](https://
 
 As the application is protected, kindly use the following credentials to access the dashboard:
 
-> email: admin@mail.com
+> email: admin@mail.com <br />
 > password: P@ssw0rd!
 
 
