@@ -4,7 +4,8 @@ Welcome to the Lendsqr administratis dashboard! This application lets you manage
 
 It also includes loan products management, settlements, fees and charges, transaction history, reporting and audit logs.
 
-The application is accessible at [https://lendsqr.techydna.com/](https://lendsqr.techydna.com/)
+The application is accessible at [https://lendsqr-techydna.vercel.app/](https://lendsqr-techydna.vercel.app/)
+
 
 As the application is protected, kindly use the following credentials to access the dashboard:
 
